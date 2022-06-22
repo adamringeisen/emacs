@@ -229,7 +229,10 @@
    
 * Enlightenments
 ** TODO Yasnippets
-** TODO Theme preferences
+** Theme preferences
+#+begin_src emacs-lisp
+  (load-theme 'misterioso t)
+#+end_src
 ** 
 
 
