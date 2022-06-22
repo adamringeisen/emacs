@@ -1,3 +1,5 @@
+#+TITLE Emacs Init v2.0
+
 * Melpa
 
 #+BEGIN_SRC emacs-lisp 
@@ -149,6 +151,15 @@
     ;;;; 4. locate-dominating-file
     ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
   )
+
+;; Use `consult-completion-in-region' if Vertico is enabled.
+;; Otherwise use the default `completion--in-region' function.
+(setq completion-in-region-function
+      (lambda (&rest args)
+        (apply (if vertico-mode
+                   #'consult-completion-in-region
+                 #'completion--in-region)
+               args)))
 #+end_src
 
 * Annoyances
@@ -200,8 +211,8 @@
 
 ** Let's start with a clean slate
 #+begin_src emacs-lisp
-  
-(setq tool-bar-mode nil)
+(menu-bar-mode -1)  
+(tool-bar-mode -1)
 (setq inhibit-startup-screen t)
 (setq global-visual-line-mode t)
 (setq blink-cursor-mode nil)
@@ -216,8 +227,54 @@
   (add-hook 'before-save-hook 'time-stamp nil)
    #+end_src
    
-
 * Enlightenments
+** Language Server Protocal
+
+#+begin_src emacs-lisp
+    (use-package lsp-mode
+     :ensure t
+     :init
+     ;; set prefix for lsp-command-kepmap
+     (setq lsp-keymap-prefix "C-c l")
+     :hook (
+	     (csharp-mode . lsp)
+;;	     (python-mode . lsp)
+	     (javascript-mode . lsp)
+	     (lsp-mode . lsp-enable-which-key-integration))
+     :commands lsp)
+    (use-package which-key
+       :config
+       (which-key-mode))
+#+end_src
+*** Python Pyright
+#+begin_src emacs-lisp
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
+#+end_src			  
+** Projectile
+#+begin_src emacs-lisp
+  (use-package projectile
+  :ensure t
+  :init
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+              ("s-p" . projectile-command-map)
+              ("C-c p" . projectile-command-map)))
+#+end_src
+** ace-window
+#+begin_src emacs-lisp
+  (use-package ace-window
+  :ensure t
+  :init
+     (global-set-key (kbd "M-o") 'ace-window)
+     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  )
+#+end_src
+
+
 ** Dashboard (startup screen)
   #+begin_src emacs-lisp
 	    (use-package dashboard
@@ -250,4 +307,13 @@
    :ensure t
    :config
    (which-key-mode))
+#+end_src
+
+** Compleate Anything
+
+#+begin_src emacs-lisp
+  (use-package company
+  :ensure t
+  :config
+  (company-mode))
 #+end_src
