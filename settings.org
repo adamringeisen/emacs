@@ -15,7 +15,7 @@
     :init
     (vertico-mode))
 
-  ;; Save history for all compleation buffers
+  ;; Save history for all completion buffers
   (use-package savehist
     :init
     (savehist-mode))
@@ -228,6 +228,11 @@
    #+end_src
    
 * Enlightenments
+** TODO Yasnippets
+** TODO Theme preferences
+** 
+
+
 ** Language Server Protocal
 
 #+begin_src emacs-lisp
@@ -309,7 +314,7 @@
    (which-key-mode))
 #+end_src
 
-** Compleate Anything
+** Complete Anything
 
 #+begin_src emacs-lisp
   (use-package company
