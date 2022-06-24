@@ -248,6 +248,10 @@ p#+TITLE Emacs Init v2.0
    #+end_src
    
 * Enlightenments
+** Tab Bar Mode
+#+begin_src emacs-lisp
+(tab-bar-mode 1)
+#+end_src
 ** TODO Yasnippets
 ** Theme preferences
 #+begin_src emacs-lisp
