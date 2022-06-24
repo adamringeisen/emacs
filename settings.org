@@ -376,7 +376,8 @@ p#+TITLE Emacs Init v2.0
     (global-set-key (kbd "C-o") (kbd "C-e RET"))
     (global-set-key (kbd "C-S-o") (kbd "C-a RET C-p"))
     (global-set-key (kbd "C-k") 'avy-kill-whole-line)
-    
+    (global-set-key (kbd "C-S-k") 'avy-kill-region)
+
   (use-package expand-region
     :ensure t
     :bind
