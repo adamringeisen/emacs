@@ -1,4 +1,4 @@
-#+TITLE Emacs Init v2.0
+p#+TITLE Emacs Init v2.0
 
 * Melpa
 
@@ -160,6 +160,15 @@
                    #'consult-completion-in-region
                  #'completion--in-region)
                args)))
+#+end_src
+
+* Languages
+** Rust
+#+begin_src emacs-lisp
+  (use-package rustic
+    :ensure t
+    :config
+    (setq rustic-format-on-save t))
 #+end_src
 
 * Annoyances
@@ -325,3 +334,17 @@
   :config
   (company-mode))
 #+end_src
+
+** Keybindings
+
+#+begin_src emacs-lisp
+      (define-prefix-command 'aqr-map)
+      (global-set-key "`" 'aqr-map)
+      (define-key aqr-map (kbd "s") 'isearch-forward)
+      (define-key aqr-map (kbd "`") (lambda () (interactive) (insert "`")))
+
+#+end_src
+
+#+RESULTS:
+| lambda | nil | (interactive) | (insert `) |
+
