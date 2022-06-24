@@ -338,13 +338,53 @@ p#+TITLE Emacs Init v2.0
 ** Keybindings
 
 #+begin_src emacs-lisp
-      (define-prefix-command 'aqr-map)
-      (global-set-key "`" 'aqr-map)
-      (define-key aqr-map (kbd "s") 'isearch-forward)
-      (define-key aqr-map (kbd "`") (lambda () (interactive) (insert "`")))
+    (define-prefix-command 'aqr-map)
+    (global-set-key "`" 'aqr-map)
+    (define-key aqr-map (kbd "s") 'isearch-forward)
+    (define-key aqr-map (kbd "a") 'avy-goto-char-timer)
+    (define-key aqr-map (kbd "`") (lambda () (interactive) (insert "`")))
+    (global-set-key (kbd "C-o") (kbd "C-e RET"))
+    (global-set-key (kbd "C-S-o") (kbd "C-a RET C-p"))
+    (global-set-key (kbd "C-k") 'avy-kill-whole-line)
+    
+  (use-package expand-region
+    :ensure t
+    :bind
+    ("C-=" . er/expand-region)
+    ("C--" . er/contract-region))
+
 
 #+end_src
 
 #+RESULTS:
-| lambda | nil | (interactive) | (insert `) |
+: er/contract-region
 
+* key-chord
+  :LOGBOOK:
+  CLOCK: [2022-05-17 Tue 07:28]
+  :END:
+Allows quick two letter 'chords' as shortcuts.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package key-chord
+  :ensure t
+  :init
+     (key-chord-mode 1)
+  )
+
+
+  (key-chord-define-global "qq" 'aqr-map)
+
+  (key-chord-define-global "qw" 'ace-window )
+  (key-chord-define-global "cx" 'isearch-forward)
+#+END_SRC
+
+#+RESULTS:
+: isearch-forward
+
+
+
+
+Two letter combinations left
+
+bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt jv jw jx jy jz kq kx kz mx mz pq pv px qb qc qd qf qg qh qj qk ql qm qn qp qv qx qy qz sx tq vb vf vh vj vk vm vp vq vw vx wq wv wx xd xj xk xr xz yq yy zf zr zx
