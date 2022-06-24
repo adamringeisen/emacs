@@ -10,27 +10,29 @@ p#+TITLE Emacs Init v2.0
 ** Vertico
 
 #+begin_src emacs-lisp
-  (use-package vertico
+    (use-package vertico
+      :ensure t
+      :init
+      (vertico-mode))
+
+    ;; Save history for all completion buffers
+    (use-package savehist
+      :init
+      (savehist-mode))
+
+(define-key vertico-map "\M-q" #'vertico-quick-insert)
+(define-key vertico-map "\C-q" #'vertico-quick-exit)
+    (use-package marginalia
+      :after vertico
+      :ensure t
+      :custom
+      (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+      :init
+      (marginalia-mode))
+
+    (use-package orderless
     :ensure t
-    :init
-    (vertico-mode))
-
-  ;; Save history for all completion buffers
-  (use-package savehist
-    :init
-    (savehist-mode))
-
-  (use-package marginalia
-    :after vertico
-    :ensure t
-    :custom
-    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-    :init
-    (marginalia-mode))
-
-  (use-package orderless
-  :ensure t
-  :custom (completion-styles '(orderless)))
+    :custom (completion-styles '(orderless)))
 #+end_src
 
 #+begin_src emacs-lisp
