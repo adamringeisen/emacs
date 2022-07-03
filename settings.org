@@ -253,6 +253,12 @@ p#+TITLE Emacs Init v2.0
 (tab-bar-mode 1)
 #+end_src
 ** TODO Yasnippets
+#+begin_src emacs-lisp
+  (use-package yasnippet
+  :ensure t
+  )
+  (setq yas-global-mode 1)
+#+end_src
 ** Theme preferences
 #+begin_src emacs-lisp
   ;;(load-theme 'misterioso t)
