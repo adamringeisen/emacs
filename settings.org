@@ -278,20 +278,45 @@ p#+TITLE Emacs Init v2.0
 ** Language Server Protocal
 
 #+begin_src emacs-lisp
-    (use-package lsp-mode
-     :ensure t
-     :init
-     ;; set prefix for lsp-command-kepmap
-     (setq lsp-keymap-prefix "C-c l")
-     :hook (
-	     (csharp-mode . lsp)
-;;	     (python-mode . lsp)
-	     (javascript-mode . lsp)
-	     (lsp-mode . lsp-enable-which-key-integration))
-     :commands lsp)
-    (use-package which-key
-       :config
-       (which-key-mode))
+  (use-package lsp-mode
+   :ensure t
+   :init
+   ;; set prefix for lsp-command-kepmap
+   (setq lsp-keymap-prefix "C-c l")
+   :hook (
+	   (csharp-mode . lsp)
+	   (python-mode . lsp)
+	   (typescript-mode . lsp)
+	   (javascript-mode . lsp)
+	   (lsp-mode . lsp-enable-which-key-integration))
+   :commands lsp)
+
+  (use-package lsp-ui
+    :ensure t
+    :commands (lsp-ui-mode)
+  ;;  :custom
+    ;; Sideline
+    ;; (lsp-ui-sideline-show-diagnostics t)
+    ;; (lsp-ui-sideline-show-hover nil)
+    ;; (lsp-ui-sideline-show-code-actions nil)
+    ;; (lsp-ui-sideline-update-mode 'line)
+    ;; (lsp-ui-sideline-delay 0)
+    ;; ;; Peek
+    ;; (lsp-ui-peek-enable t)
+    ;; (lsp-ui-peek-show-directory nil)
+    ;; ;; Documentation
+    ;; (lsp-ui-doc-enable t)
+    ;; (lsp-ui-doc-position 'at-point)
+    ;; (lsp-ui-doc-delay 0.2)
+    ;; ;; IMenu
+    ;; (lsp-ui-imenu-window-width 0)
+    ;; (lsp-ui-imenu--custom-mode-line-format nil)
+    :hook (lsp-mode . lsp-ui-mode))
+
+
+  (use-package which-key
+     :config
+     (which-key-mode))
 #+end_src
 *** Python Pyright
 #+begin_src emacs-lisp
