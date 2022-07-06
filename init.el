@@ -22,7 +22,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(lsp-pyright lsp-mode projectile which-key vertico use-package orderless marginalia dashboard consult ace-window)))
+   '(vterm typescript-mode doom-themes zenburn-theme key-chord expand-region rustic lsp-pyright lsp-mode projectile which-key vertico use-package orderless marginalia dashboard consult ace-window)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
