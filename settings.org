@@ -1,4 +1,4 @@
-p#+TITLE Emacs Init v2.0
+#+TITLE Emacs Init v2.0
 ** Font
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil
@@ -248,6 +248,41 @@ p#+TITLE Emacs Init v2.0
    #+end_src
    
 * Enlightenments
+** ace-window
+#+begin_src emacs-lisp
+  (use-package ace-window
+  :ensure t
+  :init
+     (global-set-key (kbd "M-o") 'ace-window)
+     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  )
+
+
+#+end_src
+ 
+
+
+** Org Mode
+
+#+begin_src emacs-lisp
+
+  (setq org-agenda-files '("~/org/agenda")) 
+  (setq org-directory "~/org/")
+  (setq org-html-checkbox-type 'html)
+  (use-package org-bullets
+    :ensure t
+    :diminish org-bullets-mode)
+
+  (setq org-src-tab-acts-natively t)
+
+  ;; Key binds
+
+  (define-key org-mode-map (kbd "M-,") `org-previous-visible-heading)
+  (define-key org-mode-map (kbd "M-.") `org-next-visible-heading)
+  (define-key org-mode-map (kbd "C-c s") `org-insert-subheading)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+#+end_src
+
 ** Tab Bar Mode
 #+begin_src emacs-lisp
 (tab-bar-mode 1)
@@ -401,25 +436,49 @@ p#+TITLE Emacs Init v2.0
   :config
   (company-mode))
 #+end_src
+** Custom Functions
+
+#+BEGIN_SRC emacs-lisp
+  (defun aqr-search-from-begining ()
+  "Go to the begining of the file and search from there"
+  (interactive)
+  (goto-char (point-min))
+  (isearch-forward)
+  )
+
+#+END_SRC
 
 ** Keybindings
 
 #+begin_src emacs-lisp
+
+
+    (progn
+      ;; Map for killing things
+      (define-prefix-command 'aqr-kill-map)
+      (define-key aqr-kill-map (kbd "k") 'kill-whole-line)
+      (define-key aqr-kill-map (kbd "l") 'kill-line)
+      (define-key aqr-kill-map (kbd "m") 'avy-kill-region)
+      (global-set-key (kbd "C-k") 'aqr-kill-map))
+
+
+
     (define-prefix-command 'aqr-map)
-    (global-set-key "`" 'aqr-map)
-    (define-key aqr-map (kbd "s") 'isearch-forward)
+    (define-key aqr-map (kbd "s") 'aqr-search-from-begining)
     (define-key aqr-map (kbd "a") 'avy-goto-char-timer)
     (define-key aqr-map (kbd "`") (lambda () (interactive) (insert "`")))
+   
+  ;;(define-key aqr-map (kbd "k") 'kill-whole-line)
     (global-set-key (kbd "C-o") (kbd "C-e RET"))
     (global-set-key (kbd "C-S-o") (kbd "C-a RET C-p"))
-    (global-set-key (kbd "C-k") 'avy-kill-whole-line)
-    (global-set-key (kbd "C-S-k") 'avy-kill-region)
+    ;;(global-set-key (kbd "C-k") 'avy-kill-whole-line)
+    ;;(global-set-key (kbd "C-S-k") 'avy-kill-region)
 
-  (use-package expand-region
-    :ensure t
-    :bind
-    ("C-=" . er/expand-region)
-    ("C--" . er/contract-region))
+    (use-package expand-region
+      :ensure t
+      :bind
+      ("C-=" . er/expand-region)
+      ("C--" . er/contract-region))
 
 
 #+end_src
@@ -427,7 +486,7 @@ p#+TITLE Emacs Init v2.0
 #+RESULTS:
 : er/contract-region
 
-* key-chord
+** key-chord
   :LOGBOOK:
   CLOCK: [2022-05-17 Tue 07:28]
   :END:
@@ -441,7 +500,7 @@ Allows quick two letter 'chords' as shortcuts.
   )
 
 
-  (key-chord-define-global "qq" 'aqr-map)
+  (key-chord-define-global "df" 'aqr-map)
 
   (key-chord-define-global "qw" 'ace-window )
   (key-chord-define-global "cx" 'isearch-forward)
@@ -450,9 +509,32 @@ Allows quick two letter 'chords' as shortcuts.
 #+RESULTS:
 : isearch-forward
 
-
+q
 
 
 Two letter combinations left
 
 bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt jv jw jx jy jz kq kx kz mx mz pq pv px qb qc qd qf qg qh qj qk ql qm qn qp qv qx qy qz sx tq vb vf vh vj vk vm vp vq vw vx wq wv wx xd xj xk xr xz yq yy zf zr zx
+
+** Useless Default Keys
+
+*** C-j 
+
+C-j runs the command org-return-and-maybe-indent (found in
+org-mode-map), which is an interactive native compiled Lisp function
+in ‘org.el’.
+
+It is bound to C-j.
+
+(org-return-and-maybe-indent)
+
+Goto next table row, or insert a newline, maybe indented.
+Call ‘org-table-next-row’ or ‘org-return’, depending on context.
+See the individual commands for more information.
+
+When inserting a newline, if ‘org-adapt-indentation’ is t:
+indent the line if ‘electric-indent-mode’ is disabled, don’t
+indent it if it is enabled.
+
+
+:command:
