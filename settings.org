@@ -287,12 +287,17 @@
 #+begin_src emacs-lisp
 (tab-bar-mode 1)
 #+end_src
-** TODO Yasnippets
+** Yasnippets
 #+begin_src emacs-lisp
   (use-package yasnippet
-  :ensure t
-  )
-  (setq yas-global-mode 1)
+    :ensure t
+    )
+(eval-after-load 'yasnippet
+  '(yas-global-mode))
+
+  (setq yas-snippet-dirs
+	'("~/.emacs.d/snippets"
+	  ))
 #+end_src
 ** Theme preferences
 #+begin_src emacs-lisp
@@ -316,56 +321,79 @@
 ** 
 
 
-** Language Server Protocal
+** Programing
+
+
 
 #+begin_src emacs-lisp
-  (use-package flycheck
-  :ensure t
-  :hook ((flycheck-mode . flymake-mode-off))
-  :init (global-flycheck-mode))
-
-
-  (use-package lsp-mode
-   :ensure t
-   :init
-   ;; set prefix for lsp-command-kepmap
-   (setq lsp-keymap-prefix "C-c l")
-   :hook (
-	   (csharp-mode . lsp)
-	   (python-mode . lsp)
-	   (typescript-mode . lsp)
-	   (javascript-mode . lsp)
-	   (lsp-mode . lsp-enable-which-key-integration))
-   :commands lsp)
-
-  (use-package lsp-ui
+  (use-package format-all
     :ensure t
-    :commands (lsp-ui-mode)
-  ;;  :custom
-    ;; Sideline
-    ;; (lsp-ui-sideline-show-diagnostics t)
-    ;; (lsp-ui-sideline-show-hover nil)
-    ;; (lsp-ui-sideline-show-code-actions nil)
-    ;; (lsp-ui-sideline-update-mode 'line)
-    ;; (lsp-ui-sideline-delay 0)
-    ;; ;; Peek
-    ;; (lsp-ui-peek-enable t)
-    ;; (lsp-ui-peek-show-directory nil)
-    ;; ;; Documentation
-    ;; (lsp-ui-doc-enable t)
-    ;; (lsp-ui-doc-position 'at-point)
-    ;; (lsp-ui-doc-delay 0.2)
-    ;; ;; IMenu
-    ;; (lsp-ui-imenu-window-width 0)
-    ;; (lsp-ui-imenu--custom-mode-line-format nil)
-    :hook (lsp-mode . lsp-ui-mode))
+    )
+  (add-hook 'prog-mode-hook 'format-all-mode)
 
 
-  (use-package which-key
-     :config
-     (which-key-mode))
+  (use-package flycheck
+      :ensure t
+      :hook ((flycheck-mode . flymake-mode-off))
+      :init (global-flycheck-mode))
+
+
+      (use-package lsp-mode
+       :ensure t
+       :init
+       ;; set prefix for lsp-command-kepmap
+       (setq lsp-keymap-prefix "C-c l")
+       :hook (
+	       (csharp-mode . lsp)
+	       (python-mode . lsp)
+	       (typescript-mode . lsp)
+	       (javascript-mode . lsp)
+	       (lsp-mode . lsp-enable-which-key-integration))
+       :commands lsp)
+
+      (use-package lsp-ui
+	:ensure t
+	:commands (lsp-ui-mode)
+      ;;  :custom
+	;; Sideline
+	;; (lsp-ui-sideline-show-diagnostics t)
+	;; (lsp-ui-sideline-show-hover nil)
+	;; (lsp-ui-sideline-show-code-actions nil)
+	;; (lsp-ui-sideline-update-mode 'line)
+	;; (lsp-ui-sideline-delay 0)
+	;; ;; Peek
+	;; (lsp-ui-peek-enable t)
+	;; (lsp-ui-peek-show-directory nil)
+	;; ;; Documentation
+	;; (lsp-ui-doc-enable t)
+	;; (lsp-ui-doc-position 'at-point)
+	;; (lsp-ui-doc-delay 0.2)
+	;; ;; IMenu
+	;; (lsp-ui-imenu-window-width 0)
+	;; (lsp-ui-imenu--custom-mode-line-format nil)
+	:hook (lsp-mode . lsp-ui-mode))
+
+
+      (use-package which-key
+	 :config
+	 (which-key-mode))
 #+end_src
-*** Python Pyright
+*** Python
+
+#+BEGIN_SRC emacs-lisp
+(use-package python-mode
+  :hook
+  (python-mode . pyvenv-mode)
+  (python-mode . flycheck-mode)
+  ;;(python-mode . blacken-mode)
+  :custom
+  ;; NOTE: Set these if Python 3 is called "python3" on your system!
+  (python-shell-interpreter "python3")
+  :config
+  )
+
+#+END_SRC
+*** Python Pyright - LSP Server
 #+begin_src emacs-lisp
 (use-package lsp-pyright
   :ensure t
@@ -373,6 +401,37 @@
                           (require 'lsp-pyright)
                           (lsp))))  ; or lsp-deferred
 #+end_src			  
+*** Python venv - Virtual Environments
+#+BEGIN_SRC emacs-lisp
+(use-package pyvenv
+  :ensure t
+  :init
+  (setenv "WORKON_HOME" "~/.venvs/")
+  :config
+  ;; (pyvenv-mode t)
+
+  ;; Set correct Python interpreter
+  (setq pyvenv-post-activate-hooks
+        (list (lambda ()
+                (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python")))))
+  (setq pyvenv-post-deactivate-hooks
+        (list (lambda ()
+                (setq python-shell-interpreter "python3")))))
+
+#+END_SRC
+
+*** Python Black - formatter
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package blacken
+  ;;   :init
+  ;;   (setq-default blacken-fast-unsafe t)
+  ;;   (setq-default blacken-line-length 80)
+  ;;   )
+
+#+END_SRC
+
+
+
 ** Projectile
 #+begin_src emacs-lisp
   (use-package projectile
@@ -467,7 +526,7 @@
     (define-key aqr-map (kbd "s") 'aqr-search-from-begining)
     (define-key aqr-map (kbd "a") 'avy-goto-char-timer)
     (define-key aqr-map (kbd "`") (lambda () (interactive) (insert "`")))
-   
+
   ;;(define-key aqr-map (kbd "k") 'kill-whole-line)
     (global-set-key (kbd "C-o") (kbd "C-e RET"))
     (global-set-key (kbd "C-S-o") (kbd "C-a RET C-p"))
@@ -479,7 +538,7 @@
       :bind
       ("C-=" . er/expand-region)
       ("C--" . er/contract-region))
-
+    (global-set-key (kbd "C-+") (lambda () (interactive) (message "Use C-= you idiot")))
 
 #+end_src
 
@@ -516,25 +575,13 @@ Two letter combinations left
 
 bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt jv jw jx jy jz kq kx kz mx mz pq pv px qb qc qd qf qg qh qj qk ql qm qn qp qv qx qy qz sx tq vb vf vh vj vk vm vp vq vw vx wq wv wx xd xj xk xr xz yq yy zf zr zx
 
-** Useless Default Keys
+* Custom Behaviors
+#+BEGIN_SRC emacs-lisp
+  ;; (defun aqr-python-format-before-save ()
+  ;;   "Format the file with black before saving it."
+  ;;   (when (eq major-mode 'python-mode)
+  ;;     (shell-command-to-string (format "black %s" buffer-file-name)
 
-*** C-j 
+  ;; (add-hook 'before-save-hook #'aqr-python-format-before-save)
 
-C-j runs the command org-return-and-maybe-indent (found in
-org-mode-map), which is an interactive native compiled Lisp function
-in ‘org.el’.
-
-It is bound to C-j.
-
-(org-return-and-maybe-indent)
-
-Goto next table row, or insert a newline, maybe indented.
-Call ‘org-table-next-row’ or ‘org-return’, depending on context.
-See the individual commands for more information.
-
-When inserting a newline, if ‘org-adapt-indentation’ is t:
-indent the line if ‘electric-indent-mode’ is disabled, don’t
-indent it if it is enabled.
-
-
-:command:
+#+END_SRC
