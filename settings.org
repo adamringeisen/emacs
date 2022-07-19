@@ -266,6 +266,18 @@
 
 #+begin_src emacs-lisp
 
+(defun my-minor-modes ()
+	"Enables my minor modes"
+	(flyspell-mode t)
+	(org-bullets-mode t)
+	(company-mode t)
+	(wc-mode t)
+	(visual-line-mode t)
+	)
+(add-hook 'org-mode-hook 'my-minor-modes)
+
+
+  
   (setq org-agenda-files '("~/org/agenda")) 
   (setq org-directory "~/org/")
   (setq org-html-checkbox-type 'html)
@@ -560,7 +572,7 @@ Allows quick two letter 'chords' as shortcuts.
 
 
   (key-chord-define-global "df" 'aqr-map)
-
+  (key-chord-define-global "p[" 'projectile-command-map)
   (key-chord-define-global "qw" 'ace-window )
   (key-chord-define-global "cx" 'isearch-forward)
 #+END_SRC
