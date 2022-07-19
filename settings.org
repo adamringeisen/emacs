@@ -271,7 +271,6 @@
 	(flyspell-mode t)
 	(org-bullets-mode t)
 	(company-mode t)
-	(wc-mode t)
 	(visual-line-mode t)
 	)
 (add-hook 'org-mode-hook 'my-minor-modes)
