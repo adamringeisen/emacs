@@ -285,7 +285,7 @@
     :diminish org-bullets-mode)
 
   (setq org-src-tab-acts-natively t)
-
+(setq org-edit-src-content-indentation 0)
   ;; Key binds
 
   (define-key org-mode-map (kbd "M-,") `org-previous-visible-heading)
@@ -329,7 +329,6 @@
 #+RESULTS:
 : t
 
-** 
 
 
 ** Programing
@@ -523,33 +522,36 @@
 #+begin_src emacs-lisp
 
 
-    (progn
-      ;; Map for killing things
-      (define-prefix-command 'aqr-kill-map)
-      (define-key aqr-kill-map (kbd "k") 'kill-whole-line)
-      (define-key aqr-kill-map (kbd "l") 'kill-line)
-      (define-key aqr-kill-map (kbd "m") 'avy-kill-region)
-      (global-set-key (kbd "C-k") 'aqr-kill-map))
+  (progn
+    ;; Map for killing things
+    (define-prefix-command 'aqr-kill-map)
+    (define-key aqr-kill-map (kbd "k") 'kill-whole-line)
+    (define-key aqr-kill-map (kbd "l") 'kill-line)
+    (define-key aqr-kill-map (kbd "m") 'avy-kill-region)
+    (global-set-key (kbd "C-k") 'aqr-kill-map))
 
 
 
-    (define-prefix-command 'aqr-map)
-    (define-key aqr-map (kbd "s") 'aqr-search-from-begining)
-    (define-key aqr-map (kbd "a") 'avy-goto-char-timer)
-    (define-key aqr-map (kbd "`") (lambda () (interactive) (insert "`")))
+  (define-prefix-command 'aqr-map)
+  (global-set-key (kbd "`") 'aqr-map)
+  (define-key aqr-map (kbd "s") 'aqr-search-from-begining)
+  (define-key aqr-map (kbd "f") 'projectile-find-file)
+  (define-key aqr-map (kbd "p") 'projectile-switch-project)
+  (define-key aqr-map (kbd "a") 'avy-goto-char-timer)
+  (define-key aqr-map (kbd "`") (lambda () (interactive) (insert "`")))
 
-  ;;(define-key aqr-map (kbd "k") 'kill-whole-line)
-    (global-set-key (kbd "C-o") (kbd "C-e RET"))
-    (global-set-key (kbd "C-S-o") (kbd "C-a RET C-p"))
-    ;;(global-set-key (kbd "C-k") 'avy-kill-whole-line)
-    ;;(global-set-key (kbd "C-S-k") 'avy-kill-region)
+;;(define-key aqr-map (kbd "k") 'kill-whole-line)
+  (global-set-key (kbd "C-o") (kbd "C-e RET"))
+  (global-set-key (kbd "C-S-o") (kbd "C-a RET C-p"))
+  ;;(global-set-key (kbd "C-k") 'avy-kill-whole-line)
+  ;;(global-set-key (kbd "C-S-k") 'avy-kill-region)
 
-    (use-package expand-region
-      :ensure t
-      :bind
-      ("C-=" . er/expand-region)
-      ("C--" . er/contract-region))
-    (global-set-key (kbd "C-+") (lambda () (interactive) (message "Use C-= you idiot")))
+  (use-package expand-region
+    :ensure t
+    :bind
+    ("C-=" . er/expand-region)
+    ("C--" . er/contract-region))
+  (global-set-key (kbd "C-+") (lambda () (interactive) (message "Use C-= you idiot")))
 
 #+end_src
 
@@ -571,7 +573,6 @@ Allows quick two letter 'chords' as shortcuts.
 
 
   (key-chord-define-global "df" 'aqr-map)
-  (key-chord-define-global "p[" 'projectile-command-map)
   (key-chord-define-global "qw" 'ace-window )
   (key-chord-define-global "cx" 'isearch-forward)
 #+END_SRC
