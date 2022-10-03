@@ -1,0 +1,55 @@
+class Player {
+    // ...
+    ManaPool = {
+        white: 0,
+        blue: 0,
+        black: 0,
+        red: 0,
+        green: 0,
+        colorless: 0
+    }
+
+    addMana(color, amount) {
+        this.ManaPool.color += amount;
+    }
+    //...
+}
+abstract class Card {
+    name: string
+    isTapped: boolean
+    owner: Player
+
+    constructor(name: string) {
+        this.name = name
+    }
+}
+
+class Land extends Card {
+
+    constructor {
+    super();
+}
+}
+
+class BasicLand extends Land {
+
+    constructor {
+    super();
+}
+}
+
+class Island extends BasicLand {
+    constructor {
+    super("Island")
+}
+
+onTap() {
+    if (this.isTapped === true) {
+        return new Error("You can't tap a land that's already tapped")
+    }
+    else {
+        this.isTapped = true;
+        this.Player.addMana("blue", 1)
+    }
+}
+}

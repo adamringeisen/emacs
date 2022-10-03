@@ -1,0 +1,16 @@
+# key: rc
+# name: React Component
+# --
+import React from 'react';
+
+const $1 = (${2:props}) => {
+
+    return (
+    	   <React.Fragment>
+    	   $0
+	   </React.Fragment>
+    );
+
+};
+
+export default $1;

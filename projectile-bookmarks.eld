@@ -1,0 +1,1 @@
+("~/coding/react/days-out/" "~/coding/react/portfolio/" "~/blog/" "~/coding/tauri/days-out/" "~/coding/ts/")

@@ -1,0 +1,38 @@
+import { useState } from "react";
+import "./App.css";
+import { addDays, parseISO } from "date-fns";
+
+function App() {
+  const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
+
+  const days = [10, 15, 20, 25, 30];
+  const logDays = () => {
+    console.log(date);
+  };
+  logDays();
+
+  const daysList = days.map((day, idx) => {
+    const newDate = addDays(parseISO(date), day);
+    return (
+      <h1 key={idx}>
+        {day}: {newDate.toDateString()}
+      </h1>
+    );
+  });
+  console.log(daysList);
+
+  return (
+    <div className="App">
+      <h1>Days Out Calculator</h1>
+      <input
+        onChange={(e) => setDate(e.target.value)}
+        value={date}
+        type="date"
+      />
+      {daysList}
+      <div className="card"></div>
+    </div>
+  );
+}
+
+export default App;

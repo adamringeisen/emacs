@@ -1,0 +1,11 @@
+import React from "react";
+import { Box } from "@chakra-ui/react";
+const InfoBox = () => {
+  return (
+    <React.Fragment>
+      <Box maxW={"50vw"}>This is the infobox</Box>
+    </React.Fragment>
+  );
+};
+
+export default InfoBox;
