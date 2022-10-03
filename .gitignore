@@ -1,6 +1,6 @@
 # Ignore Everything
 *
-straight
+straight/
 # But check these directories out oo la la
 !*/
 # We need the settings
