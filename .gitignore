@@ -1,0 +1,11 @@
+# Ignore Everything
+*
+# But check these directories out oo la la
+!*/
+# We need the settings
+!settings.org
+!init.el
+# And the snips
+!snippets/**
+# And this file
+!.gitignore
