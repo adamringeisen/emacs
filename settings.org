@@ -7,11 +7,13 @@
 #+end_src
 * Moved from package-selected-packages
 
+I don't know if I really need all of these. 
+#+BEGIN_SRC emacs-lisp
 (straight-use-package 'free-keys)
 (straight-use-package 'exec-path-from-shell)
 (straight-use-package 'rjsx-mode)
 (straight-use-package 'olivetti)
-(straight-use-package 'olivetti-mode)
+;;(straight-use-package 'olivetti-mode)
 (straight-use-package 'format-all)
 (straight-use-package 'pyvenv)
 (straight-use-package 'org-bullets)
@@ -32,6 +34,7 @@
 (straight-use-package 'dashboard)
 (straight-use-package 'consult)
 (straight-use-package 'ace-window)
+#+END_SRC
 
 * Path from shell
 
