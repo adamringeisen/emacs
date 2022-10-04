@@ -8,5 +8,6 @@ straight
 !init.el
 # And the snips
 !snippets/**
+!snippets
 # And this file
 !.gitignore
