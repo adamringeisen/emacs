@@ -77,7 +77,7 @@ apps are not started from a shell."
 
 #+begin_src emacs-lisp
     (use-package vertico
-      :ensure t
+      :straight t
       :init
       (vertico-mode))
 
@@ -90,21 +90,21 @@ apps are not started from a shell."
 (define-key vertico-map "\C-q" #'vertico-quick-exit)
     (use-package marginalia
       :after vertico
-      :ensure t
+      :straight t
       :custom
       (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
       :init
       (marginalia-mode))
 
     (use-package orderless
-    :ensure t
+    :straight t
     :custom (completion-styles '(orderless)))
 #+end_src
 
 #+begin_src emacs-lisp
     ;; Example configuration for Consult
   (use-package consult
-    :ensure t
+    :straight t
     ;; Replace bindings. Lazily loaded due by `use-package'.
     :bind (;; C-c bindings (mode-specific-map)
 	   ("C-c h" . consult-history)
@@ -234,7 +234,7 @@ apps are not started from a shell."
 ** Rust
 #+begin_src emacs-lisp
   (use-package rustic
-    :ensure t
+    :straight t
     :config
     (setq rustic-format-on-save t))
 #+end_src
@@ -321,14 +321,34 @@ Setting this to a non-nil value makes it work like literally every other program
 
 #+begin_src emacs-lisp
 (use-package olivetti
-  :ensure t
+  :straight t
   )
 #+end_src
- 
+** Tab Out
+#+BEGIN_SRC
+
+(add-hook 'prog-mode-hook 'tab-jump-out-mode)
+#+END_SRC
+
+** Electric Pairs
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'prog-mode-hook 'electric-pair-mode)
+#+END_SRC
+** Relative line numbers
+#+BEGIN_SRC emacs-lisp
+(setq display-line-numbers-type 'relative)
+
+;; Just Programming Modes
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
+;;Global
+;;(global-display-line-numbers-mode)	
+#+END_SRC
 ** ace-window
 #+begin_src emacs-lisp
   (use-package ace-window
-  :ensure t
+  :straight t
   :init
      (global-set-key (kbd "M-o") 'ace-window)
      (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
@@ -358,7 +378,7 @@ Setting this to a non-nil value makes it work like literally every other program
   (setq org-directory "~/org/")
   (setq org-html-checkbox-type 'html)
   (use-package org-bullets
-    :ensure t
+    :straight t
     :diminish org-bullets-mode)
 
   (setq org-src-tab-acts-natively t)
@@ -380,7 +400,7 @@ Setting this to a non-nil value makes it work like literally every other program
 ** Yasnippets
 #+begin_src emacs-lisp
   (use-package yasnippet
-    :ensure t
+    :straight t
     )
 (eval-after-load 'yasnippet
   '(yas-global-mode))
@@ -393,7 +413,7 @@ Setting this to a non-nil value makes it work like literally every other program
 #+begin_src emacs-lisp
   ;;(load-theme 'misterioso t)
   (use-package doom-themes
-  :ensure t
+  :straight t
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -416,24 +436,24 @@ Setting this to a non-nil value makes it work like literally every other program
 
 #+begin_src emacs-lisp
 ;; (use-package format-all
-;;   :ensure t
+;;   :straight t
 ;;   )
 ;; (add-hook 'prog-mode-hook 'format-all-mode)
 
 (use-package prettier-js
-  :ensure t
+  :straight t
   :init
   (add-hook 'js-mode-hook  'prettier-js-mode)
 )
 
 (use-package flycheck
-    :ensure t
+    :straight t
     :hook ((flycheck-mode . flymake-mode-off))
     :init (global-flycheck-mode))
 
 
     (use-package lsp-mode
-     :ensure t
+     :straight t
      :init
      ;; set prefix for lsp-command-kepmap
      (setq lsp-keymap-prefix "C-c l")
@@ -447,7 +467,7 @@ Setting this to a non-nil value makes it work like literally every other program
      :commands lsp)
 
     (use-package lsp-ui
-      :ensure t
+      :straight t
       :commands (lsp-ui-mode)
     ;;  :custom
       ;; Sideline
@@ -470,7 +490,7 @@ Setting this to a non-nil value makes it work like literally every other program
 
 
     (use-package which-key
-      :ensure t
+      :straight t
        :config
        (which-key-mode))
 #+end_src
@@ -492,7 +512,7 @@ Setting this to a non-nil value makes it work like literally every other program
 *** Python Pyright - LSP Server
 #+begin_src emacs-lisp
 (use-package lsp-pyright
-  :ensure t
+  :straight t
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp))))  ; or lsp-deferred
@@ -500,7 +520,7 @@ Setting this to a non-nil value makes it work like literally every other program
 *** Python venv - Virtual Environments
 #+BEGIN_SRC emacs-lisp
 (use-package pyvenv
-  :ensure t
+  :straight t
   :init
  ;; (setenv "WORKON_HOME" "~/.venv/")
   :config
@@ -550,9 +570,9 @@ Setting this to a non-nil value makes it work like literally every other program
 ** Typescript
 
 #+begin_src emacs-lisp
-  (use-package tide :ensure t)
-  (use-package company :ensure t)
-  (use-package flycheck :ensure t)
+  (use-package tide :straight t)
+  (use-package company :straight t)
+  (use-package flycheck :straight t)
 (flycheck-add-mode 'typescript-tslint 'web-mode)
   (defun setup-tide-mode ()
     (interactive)
@@ -578,7 +598,7 @@ Setting this to a non-nil value makes it work like literally every other program
 ** Projectile
 #+begin_src emacs-lisp
   (use-package projectile
-  :ensure t
+  :straight t
   :init
   (projectile-mode +1)
   :bind (:map projectile-mode-map
@@ -588,7 +608,7 @@ Setting this to a non-nil value makes it work like literally every other program
 ** ace-window
 #+begin_src emacs-lisp
   (use-package ace-window
-  :ensure t
+  :straight t
   :init
      (global-set-key (kbd "M-o") 'ace-window)
      (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
@@ -599,7 +619,7 @@ Setting this to a non-nil value makes it work like literally every other program
 ** Dashboard (startup screen)
   #+begin_src emacs-lisp
 	    (use-package dashboard
-		:ensure t
+		:straight t
 		:diminish dashboard-mode
 		:config
 		(setq dashboard-banner-logo-title "Nil sin Labour")
@@ -625,7 +645,7 @@ Setting this to a non-nil value makes it work like literally every other program
 
 #+begin_src emacs-lisp
   (use-package which-key
-   :ensure t
+   :straight t
    :config
    (which-key-mode))
 #+end_src
@@ -634,7 +654,7 @@ Setting this to a non-nil value makes it work like literally every other program
 
 #+begin_src emacs-lisp
   (use-package company
-  :ensure t
+  :straight t
   :config
   (company-mode))
 #+end_src
@@ -685,7 +705,7 @@ Setting this to a non-nil value makes it work like literally every other program
   (global-set-key (kbd "M-[") `backward-paragraph)
   (global-set-key (kbd "M-]") `forward-paragraph)
   (use-package expand-region
-    :ensure t
+    :straight t
     :bind
     ("C-=" . er/expand-region)
     ("C--" . er/contract-region))
@@ -704,7 +724,7 @@ Allows quick two letter 'chords' as shortcuts.
 
 #+BEGIN_SRC emacs-lisp
 (use-package key-chord
-:ensure t
+:straight t
 :init
    (key-chord-mode 1)
 )
