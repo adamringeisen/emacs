@@ -239,7 +239,6 @@ apps are not started from a shell."
     (setq rustic-format-on-save t))
 #+end_src
 
-
 * Annoyances
 ** Deletion Mode
 This option sets what happens when you highlight text and then start typing. By default, for some reason, the answer is nothing - you just start typing and the marked text just stays there and you feel like a dumb ass.
@@ -358,17 +357,19 @@ Setting this to a non-nil value makes it work like literally every other program
 #+end_src
  
 
-
 ** Org Mode
 
 #+begin_src emacs-lisp
 
 (defun my-minor-modes ()
 	"Enables my minor modes"
+	(interactive)
 	(flyspell-mode t)
 	(org-bullets-mode t)
 	(company-mode t)
 	(visual-line-mode t)
+	(olivetti-mode t)
+	(setq scroll-margin 30)
 	)
 (add-hook 'org-mode-hook 'my-minor-modes)
 
@@ -427,7 +428,6 @@ Setting this to a non-nil value makes it work like literally every other program
 
 #+RESULTS:
 : t
-
 
 
 ** Programing
@@ -615,7 +615,6 @@ Setting this to a non-nil value makes it work like literally every other program
   )
 #+end_src
 
-
 ** Dashboard (startup screen)
   #+begin_src emacs-lisp
 	    (use-package dashboard
@@ -745,6 +744,11 @@ q
 Two letter combinations left
 
 bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt jv jw jx jy jz kq kx kz mx mz pq pv px qb qc qd qf qg qh qj qk ql qm qn qp qv qx qy qz sx tq vb vf vh vj vk vm vp vq vw vx wq wv wx xd xj xk xr xz yq yy zf zr zx
+
+** Writing Mode
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
 
 * Custom Behaviors
 #+BEGIN_SRC emacs-lisp
