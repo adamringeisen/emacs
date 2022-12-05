@@ -238,6 +238,10 @@ apps are not started from a shell."
     :config
     (setq rustic-format-on-save t))
 #+end_src
+** Go
+#+BEGIN_SRC emacs-lisp
+(straight-use-package 'go-mode)
+#+END_SRC
 
 * Annoyances
 ** Deletion Mode
