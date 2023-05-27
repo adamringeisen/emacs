@@ -8,7 +8,9 @@
 * Path from shell
 
 #+begin_src emacs-lisp
-;; (straight-use-package 'exec-path-from-shell)
+(straight-use-package 'exec-path-from-shell)
+(exec-path-from-shell-initialize)
+
 ;; (defun set-exec-path-from-shell-PATH ()
 ;;   "Set up Emacs' `exec-path' and PATH environment variable to match
 ;; that used by the user's shell.
@@ -18,7 +20,7 @@
 ;;   (interactive)
 ;;   (let ((path-from-shell (replace-regexp-in-string
 ;; 			  "[ \t\n]*$" "" (shell-command-to-string
-;; 					  "$SHELL --login -c 'echo $PATH'"
+;; 					  "$SHELL -c 'echo $PATH'"
 ;; 						    ))))
 ;;     (setenv "PATH" path-from-shell)
 ;;     (setq exec-path (split-string path-from-shell path-separator))))
@@ -53,6 +55,7 @@
 
     ;; Save history for all completion buffers
     (use-package savehist
+      :straight t
       :init
       (savehist-mode))
 
@@ -133,6 +136,7 @@
 
   ;; The :init configuration is always executed (Not lazy)
   :init
+;;(global-unset-key (kbd "C-x b"))  
 
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
@@ -182,8 +186,8 @@
     ;;;; 1. project.el (the default)
   ;; (setq consult-project-function #'consult--default-project--function)
     ;;;; 2. projectile.el (projectile-project-root)
-  ;; (autoload 'projectile-project-root "projectile")
-  ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
+  (autoload 'projectile-project-root "projectile")
+  (setq consult-project-function (lambda (_) (projectile-project-root)))
     ;;;; 3. vc.el (vc-root-dir)
   ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
     ;;;; 4. locate-dominating-file
@@ -191,6 +195,7 @@
   )
 
 ;; Use `consult-completion-in-region' if Vertico is enabled.
+
 ;; Otherwise use the default `completion--in-region' function.
 (setq completion-in-region-function
       (lambda (&rest args)
@@ -461,34 +466,37 @@ Setting this to a non-nil value makes it work like literally every other program
 	     (javascript-mode . lsp)
 	     (js-mode . lsp)
 	     (css-mode . lsp)
+	     (go-mode . lsp)
 	     (lsp-mode . lsp-enable-which-key-integration))
      :commands lsp)
 
     (use-package lsp-ui
       :straight t
       :commands (lsp-ui-mode)
-    ;;  :custom
-      ;; Sideline
-      ;; (lsp-ui-sideline-show-diagnostics t)
-      ;; (lsp-ui-sideline-show-hover nil)
-      ;; (lsp-ui-sideline-show-code-actions nil)
-      ;; (lsp-ui-sideline-update-mode 'line)
-      ;; (lsp-ui-sideline-delay 0)
-      ;; ;; Peek
-      ;; (lsp-ui-peek-enable t)
-      ;; (lsp-ui-peek-show-directory nil)
-      ;; ;; Documentation
-      ;; (lsp-ui-doc-enable t)
-      ;; (lsp-ui-doc-position 'at-point)
-      ;; (lsp-ui-doc-delay 0.2)
-      ;; ;; IMenu
-      ;; (lsp-ui-imenu-window-width 0)
-      ;; (lsp-ui-imenu--custom-mode-line-format nil)
+     :custom
+      Sideline
+      (lsp-ui-sideline-show-diagnostics t)
+      (lsp-ui-sideline-show-hover nil)
+      (lsp-ui-sideline-show-code-actions nil)
+      (lsp-ui-sideline-update-mode 'line)
+      (lsp-ui-sideline-delay 0)
+      ;; Peek
+      (lsp-ui-peek-enable t)
+      (lsp-ui-peek-show-directory nil)
+      ;; Documentation
+      (lsp-ui-doc-enable t)
+      (lsp-ui-doc-position 'at-point)
+      (lsp-ui-doc-delay 0.2)
+      ;; IMenu
+      (lsp-ui-imenu-window-width 0)
+      (lsp-ui-imenu--custom-mode-line-format nil)
       :hook (lsp-mode . lsp-ui-mode))
 
 
 #+end_src
+
 *** Python
+
 
 #+BEGIN_SRC emacs-lisp
 (use-package python-mode
@@ -562,6 +570,21 @@ Setting this to a non-nil value makes it work like literally every other program
                 (setup-tide-mode))))
 #+END_SRC
 
+** Magit
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :straight t
+  :ensure t)
+
+#+END_SRC
+
+** C#
+
+#+BEGIN_SRC emacs-lisp
+(straight-use-package 'csharp-mode)
+#+END_SRC
+
 ** Typescript
 
 #+begin_src emacs-lisp
@@ -599,6 +622,13 @@ Setting this to a non-nil value makes it work like literally every other program
   :bind (:map projectile-mode-map
               ("s-p" . projectile-command-map)
               ("C-c p" . projectile-command-map)))
+
+(projectile-register-project-type 'go '("go.mod")
+				  :project-file "go.mod"
+				  :compile "go build"
+				  :test "go test"
+				  :run "go run"
+				  :test-suffix "_test")
 #+end_src
 ** ace-window
 #+begin_src emacs-lisp
@@ -697,8 +727,8 @@ Invoke to see which keys are free in current buffer.
   (define-key aqr-map (kbd "r c") 'avy-copy-region)
   (define-key aqr-map (kbd "r k") 'avy-kill-region)
   (define-key aqr-map (kbd "l") 'avy-goto-line)
-  (define-key aqr-map (kbd "b") 'consult-buffer)
-  (define-key aqr-map (kbd "i") 'consult-imenu)
+  ;;(define-key aqr-map (kbd "b") 'consult-buffer)
+  ;;(define-key aqr-map (kbd "i") 'consult-imenu)
 ;;(define-key aqr-map (kbd "k") 'kill-whole-line)
 ;; Use C-o for open new line below and C-O for above
 (global-set-key (kbd "C-o") (kbd "C-e RET"))
