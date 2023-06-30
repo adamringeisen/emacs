@@ -320,7 +320,7 @@ Setting this to a non-nil value makes it work like literally every other program
 #+END_SRC
 ** Tab Out
 #+BEGIN_SRC
-
+(straight-use-package 'tab-jump-out)
 (add-hook 'prog-mode-hook 'tab-jump-out-mode)
 #+END_SRC
 ** Which Key
