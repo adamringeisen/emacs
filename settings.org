@@ -319,7 +319,7 @@ Setting this to a non-nil value makes it work like literally every other program
 
 #+END_SRC
 ** Tab Out
-#+BEGIN_SRC
+#+BEGIN_SRC emacs-lisp
 (straight-use-package 'tab-jump-out)
 (add-hook 'prog-mode-hook 'tab-jump-out-mode)
 #+END_SRC
@@ -790,12 +790,19 @@ bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt
 
 * Custom Behaviors
 #+BEGIN_SRC emacs-lisp
-  ;; (defun aqr-python-format-before-save ()
-  ;;   "Format the file with black before saving it."
-  ;;   (when (eq major-mode 'python-mode)
-  ;;     (shell-command-to-string (format "black %s" buffer-file-name)
 
-  ;; (add-hook 'before-save-hook #'aqr-python-format-before-save)
+(defun newline-above-and-below ()
+  "AIm: Inserts a newline above and below the current line."
+  (interactive)
+  (beginning-of-line)     ; Move to the start of the current line
+  (newline)               ; Insert a newline above
+  (forward-line -1)       ; Move to the original line
+  (end-of-line)           ; Move to the end of the current (original) line
+  (newline))
+
+(global-set-key (kbd "C-c n") 'newline-above-and-below)
+
+
 
 #+END_SRC
 
