@@ -242,7 +242,7 @@ Setting this to a non-nil value makes it work like literally every other program
 #+begin_src emacs-lisp
   (setq visible-bell 1)
 #+end_src
-** Backups are an annoying but necessary evil that must be manages
+** Backups are an annoying but necessary evil that must be managed
 
 #+BEGIN_SRC emacs-lisp
 ;; No lock files, because two users will never work on same file
@@ -554,6 +554,7 @@ Setting this to a non-nil value makes it work like literally every other program
 (use-package web-mode
   :straight t)
    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+   (add-to-list 'auto-mode-alist '("\\.tmpl?\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.cshtml?\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.svelte?\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.j2?\\'" . web-mode))
@@ -563,6 +564,7 @@ Setting this to a non-nil value makes it work like literally every other program
 	 ("blade"  . "\\.blade\\.")
 	 ("svelte" . "\\.svelte\\.")
 	 ("django" . "\\.j2\\.")
+	 ("go"     . "\\.tmpl\\.")
  ))
  (add-hook 'web-mode-hook
             (lambda ()
