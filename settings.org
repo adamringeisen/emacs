@@ -281,7 +281,7 @@ Setting this to a non-nil value makes it work like literally every other program
 ** Don't be bothering me with bullshit
 
 #+begin_src emacs-lisp
-  (setq warning-minimum-level :error)
+  (setq warning-minimum-level :warning)
 #+end_src
 
 ** Let's start with a clean slate
@@ -374,12 +374,12 @@ Setting this to a non-nil value makes it work like literally every other program
 	(olivetti-mode t)
 	(setq scroll-margin 30)
 	)
-(add-hook 'org-mode-hook 'my-minor-modes)
+;;(add-hook 'org-mode-hook 'my-minor-modes)
 
 
   
-  (setq org-agenda-files '("~/org/agenda")) 
-  (setq org-directory "~/org/")
+;;  (setq org-agenda-files '("~/org/agenda")) 
+;;  (setq org-directory "~/org/")
   (setq org-html-checkbox-type 'html)
   (use-package org-bullets
     :straight t
@@ -808,5 +808,34 @@ bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt
 
 #+END_SRC
 
+* Literate Programming
 
+** Custom Functions
+
+*** Execute code blocks in v-term.
+This will check to see that you are in a org mode source block and then run the contents in vterm, using an existing one or opening a new one.
+
+#+begin_src elisp
+(defun run-command-in-vterm (command)
+  "Run COMMAND in the current vterm buffer if it exists, otherwise create a new vterm buffer."
+  (interactive "sCommand to run in vterm: ")
+  (require 'vterm)
+  (let ((vterm-buffer (or (get-buffer "*vterm*")
+                          (vterm))))
+    (with-current-buffer vterm-buffer
+      (vterm-send-string command)
+      (vterm-send-return)
+      (pop-to-buffer vterm-buffer))))
+
+(defun run-org-block-in-vterm ()
+  "Run the content of the current org source block in a new or existing vterm buffer."
+  (interactive)
+  (unless (eq major-mode 'org-mode)
+    (error "Not in org-mode"))
+  (let ((element (org-element-at-point)))
+    (when (eq (org-element-type element) 'src-block)
+      (let ((content (org-element-property :value element)))
+        (run-command-in-vterm content)))))
+
+#+end_src
 
