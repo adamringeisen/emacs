@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Org Model Title Property
+# key: prop
+# --
+#+${1:$$(yas-choose-value '("TITLE" "AUTHOR" "DATE" "DESCRIPTION" "KEYWORDS"))}: $0

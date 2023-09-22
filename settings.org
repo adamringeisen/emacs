@@ -228,6 +228,14 @@
 (straight-use-package 'go-mode)
 #+END_SRC
 
+** Dockerfiles
+
+#+BEGIN_SRC emacs-lisp
+(straight-use-package 'dockerfile-mode)
+
+#+END_SRC
+
+
 * Annoyances
 ** Deletion Mode
 This option sets what happens when you highlight text and then start typing. By default, for some reason, the answer is nothing - you just start typing and the marked text just stays there and you feel like a dumb ass.
@@ -469,6 +477,9 @@ Setting this to a non-nil value makes it work like literally every other program
 	     (go-mode . lsp)
 	     (lsp-mode . lsp-enable-which-key-integration))
      :commands lsp)
+
+(add-hook 'org-src-mode-hook #'my-org-babel-lsp-setup)
+
 
     (use-package lsp-ui
       :straight t
@@ -816,6 +827,7 @@ bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt
 This will check to see that you are in a org mode source block and then run the contents in vterm, using an existing one or opening a new one.
 
 #+begin_src elisp
+;; ChatGPT wrote this for me after a lot of back and forth.
 (defun run-command-in-vterm (command)
   "Run COMMAND in the current vterm buffer if it exists, otherwise create a new vterm buffer."
   (interactive "sCommand to run in vterm: ")
