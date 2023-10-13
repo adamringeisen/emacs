@@ -240,6 +240,10 @@
 
 #+END_SRC
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a72c99b (Added snippets.)
 * Annoyances
 ** Deletion Mode
 This option sets what happens when you highlight text and then start typing. By default, for some reason, the answer is nothing - you just start typing and the marked text just stays there and you feel like a dumb ass.
@@ -527,7 +531,11 @@ Setting this to a non-nil value makes it work like literally every other program
 	     (lsp-mode . lsp-enable-which-key-integration))
      :commands lsp)
 
+<<<<<<< HEAD
 ;;(add-hook 'org-src-mode-hook #'my-org-babel-lsp-setup)
+=======
+(add-hook 'org-src-mode-hook #'my-org-babel-lsp-setup)
+>>>>>>> a72c99b (Added snippets.)
 
 
     (use-package lsp-ui
