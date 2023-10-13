@@ -1,4 +1,4 @@
-#+TITLE Emacs Init v2.0
+#+TITLE Emacs Init v3.1
 * Straight Use Package
 
 #+begin_src emacs-lisp
@@ -53,32 +53,32 @@
       :init
       (vertico-mode))
 
-    ;; Save history for all completion buffers
-    (use-package savehist
-      :straight t
-      :init
-      (savehist-mode))
+      ;; Save history for all completion buffers
+      (use-package savehist
+	:straight t
+	:init
+	(savehist-mode))
 
 (define-key vertico-map "\M-q" #'vertico-quick-insert)
 (define-key vertico-map "\C-q" #'vertico-quick-exit)
-    (use-package marginalia
-      :after vertico
+ (use-package marginalia
+   :after vertico
+   :straight t
+   :custom
+   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+   :init
+   (marginalia-mode))
+   (use-package orderless
       :straight t
-      :custom
-      (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-      :init
-      (marginalia-mode))
-
-    (use-package orderless
-    :straight t
-    :custom (completion-styles '(orderless)))
+      :custom (completion-styles '(orderless)))
 #+end_src
 
-!#+begin_src emacs-lisp
+#+begin_src emacs-lisp
 ;; Example configuration for Consult
 (use-package consult
   :straight t
   ;; Replace bindings. Lazily loaded due by `use-package'.
+
   :bind (;; C-c bindings (mode-specific-map)
 	 ("C-c h" . consult-history)
 	 ("C-c m" . consult-mode-command)
@@ -128,11 +128,14 @@
 	 ;; Minibuffer history
 	 :map minibuffer-local-map
 	 ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-	 ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+	 ("M-r" . consult-history))               ;; orig. previous-matching-history-element
+
+;; From here up is known and good.
 
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
-  :hook (completion-list-mode . consult-preview-at-point-mode)
+ :hook (completion-list-mode . consult-preview-at-point-mode)
+
 
   ;; The :init configuration is always executed (Not lazy)
   :init
@@ -151,9 +154,9 @@
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
 	xref-show-definitions-function #'consult-xref)
-
   ;; Configure other variables and modes in the :config section,
   ;; after lazily loading the package.
+;; Here up is good
   :config
 
   ;; Optionally configure preview. The default value
@@ -163,14 +166,15 @@
   ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
   ;; For some commands and buffer sources it is useful to configure the
   ;; :preview-key on a per-command basis using the `consult-customize' macro.
-  (consult-customize
-   consult-theme
-   :preview-key '(:debounce 0.2 any)
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-recent-file
-   consult--source-project-recent-file
-   :preview-key (kbd "M-."))
+  ;; (consult-customize
+  ;;  consult-theme
+  ;;  :preview-key '(:debounce 0.2 any)
+  ;;  consult-ripgrep consult-git-grep consult-grep
+  ;;  consult-bookmark consult-recent-file consult-xref
+  ;;  consult--source-bookmark consult--source-recent-file
+  ;;  consult--source-project-recent-file
+  ;;  :preview-key (kbd "M-.")))
+
 
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
@@ -194,15 +198,16 @@
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
   )
 
+
 ;; Use `consult-completion-in-region' if Vertico is enabled.
 
 ;; Otherwise use the default `completion--in-region' function.
 (setq completion-in-region-function
       (lambda (&rest args)
-        (apply (if vertico-mode
-                   #'consult-completion-in-region
-                 #'completion--in-region)
-               args)))
+	(apply (if vertico-mode
+		   #'consult-completion-in-region
+		 #'completion--in-region)
+	       args)))
 #+end_src
 
 * Languages
@@ -234,7 +239,6 @@
 (straight-use-package 'dockerfile-mode)
 
 #+END_SRC
-
 
 * Annoyances
 ** Deletion Mode
@@ -289,7 +293,7 @@ Setting this to a non-nil value makes it work like literally every other program
 ** Don't be bothering me with bullshit
 
 #+begin_src emacs-lisp
-  (setq warning-minimum-level :warning)
+(setq warning-minimum-level :warning)
 #+end_src
 
 ** Let's start with a clean slate
@@ -368,8 +372,11 @@ Setting this to a non-nil value makes it work like literally every other program
 
 #+end_src
  
-** Org Mode
+** DONE Org Mode
 
+
+
+*** TODO This should be moved to a writing mode, and the org one re-written
 #+begin_src emacs-lisp
 
 (defun my-minor-modes ()
@@ -386,14 +393,14 @@ Setting this to a non-nil value makes it work like literally every other program
 
 
   
-;;  (setq org-agenda-files '("~/org/agenda")) 
-;;  (setq org-directory "~/org/")
+(setq org-agenda-files '("~/Sync/org/agenda")) 
+(setq org-directory "~/Sync/org/")
   (setq org-html-checkbox-type 'html)
   (use-package org-bullets
     :straight t
     :diminish org-bullets-mode)
 
-  (setq org-src-tab-acts-natively t)
+ ;; (setq org-src-tab-acts-natively t)
 (setq org-edit-src-content-indentation 0)
   ;; Key binds
 
@@ -404,6 +411,46 @@ Setting this to a non-nil value makes it work like literally every other program
   (define-key org-mode-map (kbd "C-c s") `org-insert-subheading)
   (global-set-key (kbd "C-c a") 'org-agenda)
 #+end_src
+
+#+BEGIN_SRC emacs-lisp
+(define-key global-map (kbd "<f5>") 'org-capture)
+(setq org-default-notes-file (concat org-directory "notes.org"))
+(require 'org-capture)  ; Make sure org-capture is loaded
+
+;; If org-capture-templates hasn't been defined yet, initialize it as an empty list.
+ (boundp 'org-capture-templates)
+  (setq org-capture-templates '())
+
+(add-to-list 'org-capture-templates
+             '("p" "Programming Notes"))
+
+(add-to-list 'org-capture-templates
+             '("pg" "Golang Note" entry
+               (file+headline "~/Sync/org/code-notes.org" "Golang")
+               "* %^{Description}\n%?\n#+BEGIN_SRC golang\n%i\n#+END_SRC\nEntered on %U\n"))
+
+(add-to-list 'org-capture-templates
+             '("ph" "HTML Note" entry
+               (file+headline "~/Sync/org/code-notes.org" "HTML")
+               "* %^{Description}\n%?\n#+BEGIN_SRC html\n%i\n#+END_SRC\nEntered on %U\n"))
+
+(add-to-list 'org-capture-templates
+             '("ps" "SQL Note" entry
+               (file+headline "~/Sync/org/code-notes.org" "SQL")
+               "* %^{Description}\n%?\n#+BEGIN_SRC sql\n%i\n#+END_SRC\nEntered on %U\n"))
+
+(add-to-list 'org-capture-templates
+      '("t" "Thought" entry (file+headline org-default-notes-file "Random Thoughts")
+         "* %?\nEntered on %U\n"))
+
+(add-to-list 'org-capture-templates
+	     '("q" "Quote" entry
+	       (file+headline "~/Sync/org/quotes.org" "Quotes")
+               "* %?\nEntered on %U\n"))
+
+	       
+#+END_SRC
+
 
 ** Tab Bar Mode
 #+begin_src emacs-lisp
@@ -445,6 +492,8 @@ Setting this to a non-nil value makes it work like literally every other program
 
 
 #+begin_src emacs-lisp
+
+
 ;; (use-package format-all
 ;;   :straight t
 ;;   )
@@ -478,7 +527,7 @@ Setting this to a non-nil value makes it work like literally every other program
 	     (lsp-mode . lsp-enable-which-key-integration))
      :commands lsp)
 
-(add-hook 'org-src-mode-hook #'my-org-babel-lsp-setup)
+;;(add-hook 'org-src-mode-hook #'my-org-babel-lsp-setup)
 
 
     (use-package lsp-ui
@@ -503,7 +552,7 @@ Setting this to a non-nil value makes it work like literally every other program
       (lsp-ui-imenu--custom-mode-line-format nil)
       :hook (lsp-mode . lsp-ui-mode))
 
-
+(require 'lsp-quicklintjs)
 #+end_src
 
 *** Python
@@ -659,7 +708,7 @@ Setting this to a non-nil value makes it work like literally every other program
 		:straight t
 		:diminish dashboard-mode
 		:config
-		(setq dashboard-banner-logo-title "Nil sin Labour")
+		(setq dashboard-banner-logo-title "Nihil sine labore")
 		(setq dashboard-startup-banner "~/.emacs.d/logo.png.fix")
 		(setq dashboard-items '((recents  . 5)
 					(bookmarks . 5)
@@ -675,7 +724,7 @@ Setting this to a non-nil value makes it work like literally every other program
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (setq recentf-max-saved-items 25)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
   #+end_src
 
 ** Which Key
@@ -800,12 +849,30 @@ bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt
 ;; (straight-use-package 'apheleia)
 ;; (apheleia-global-mode +1)
 #+END_SRC
+** Centered Mini Buffer
+
+#+BEGIN_SRC emacs-lisp
+(use-package mini-frame
+  :straight t
+  :config
+  (mini-frame-mode 1))
+
+(setq mini-frame-color-shift-step 0)
+
+(setq mini-frame-show-parameters
+      '((top . 0.3)
+        (left . 0.5)
+        (width . 0.65)
+        ;; (height . 10)
+        (minibuffer . only)))
+
+#+END_SRC
 
 * Custom Behaviors
 #+BEGIN_SRC emacs-lisp
 
 (defun newline-above-and-below ()
-  "AIm: Inserts a newline above and below the current line."
+  "Inserts a newline above and below the current line."
   (interactive)
   (beginning-of-line)     ; Move to the start of the current line
   (newline)               ; Insert a newline above
@@ -815,6 +882,17 @@ bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt
 
 (global-set-key (kbd "C-c n") 'newline-above-and-below)
 
+
+(defun duplicate-line ()
+  "Duplicate the current line."
+  (interactive)
+  (let ((content (thing-at-point 'line)))
+    (end-of-line)
+    (newline)
+    (insert content)
+    (forward-line -1)))
+
+(global-set-key (kbd "C-c j") 'duplicate-line)
 
 
 #+END_SRC

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: go-error-check
+# key: er
+# --
+if err != nil {
+   log.Fatal(err)
+}
+$0

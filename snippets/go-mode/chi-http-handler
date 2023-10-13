@@ -1,0 +1,22 @@
+# name: chi-http-handler
+# key: chihandy
+# --
+func ${1:handlerName}(w http.ResponseWriter, r *http.Request) {
+    // Retrieve context from the request
+    ctx := r.Context()
+
+    // Check if context is canceled or deadline exceeded
+    if err := ctx.Err(); err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    // Retrieve URL parameters using chi
+    param := chi.URLParam(r, "${2:paramName}")
+
+    // TODO: Handler logic here
+
+    // Write response
+    w.WriteHeader(http.StatusOK)
+    _, _ = w.Write([]byte("${3:response}"))
+}
