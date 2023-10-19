@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: go-json-field
+# key: jso
+# --
+`json:"$1"`$0

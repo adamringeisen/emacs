@@ -6,26 +6,10 @@
 (straight-use-package 'use-package)
 #+end_src
 * Path from shell
-
+Makes sure that emacs has the same path as your shell.
 #+begin_src emacs-lisp
 (straight-use-package 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
-
-;; (defun set-exec-path-from-shell-PATH ()
-;;   "Set up Emacs' `exec-path' and PATH environment variable to match
-;; that used by the user's shell.
-
-;; This is particularly useful under Mac OS X and macOS, where GUI
-;; apps are not started from a shell."
-;;   (interactive)
-;;   (let ((path-from-shell (replace-regexp-in-string
-;; 			  "[ \t\n]*$" "" (shell-command-to-string
-;; 					  "$SHELL -c 'echo $PATH'"
-;; 						    ))))
-;;     (setenv "PATH" path-from-shell)
-;;     (setq exec-path (split-string path-from-shell path-separator))))
-
-;; (set-exec-path-from-shell-PATH)
 #+end_src
 
 
@@ -34,19 +18,23 @@
 
 (set-face-attribute 'default nil
                   :font "DejaVu Sans Mono 14")
+
 #+end_src
 
 #+RESULTS:
 
-** Melpa
+** Melpa and Misc
 
 #+BEGIN_SRC emacs-lisp 
+(require 'misc)
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 #+END_SRC
 * Completion
-** Vertico
-
+** Vertico Orderless Marginalia
+Vertico for vertical completion.
+Orderless for better regex searches.
+Marginalia for discoverability.
 #+begin_src emacs-lisp
     (use-package vertico
       :straight t
@@ -72,136 +60,66 @@
       :straight t
       :custom (completion-styles '(orderless)))
 #+end_src
+** Consult
 
+Consult make all this stuff below better. 
 #+begin_src emacs-lisp
-;; Example configuration for Consult
 (use-package consult
   :straight t
-  ;; Replace bindings. Lazily loaded due by `use-package'.
-
-  :bind (;; C-c bindings (mode-specific-map)
-	 ("C-c h" . consult-history)
-	 ("C-c m" . consult-mode-command)
-	 ("C-c k" . consult-kmacro)
-	 ;; C-x bindings (ctl-x-map)
-	 ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-	 ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-	 ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-	 ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-	 ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-	 ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
-	 ;; Custom M-# bindings for fast register access
-	 ("M-#" . consult-register-load)
-	 ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-	 ("C-M-#" . consult-register)
-	 ;; Other custom bindings
-	 ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-	 ("<help> a" . consult-apropos)            ;; orig. apropos-command
-	 ;; M-g bindings (goto-map)
-	 ("M-g e" . consult-compile-error)
-	 ("M-g f" . consult-flycheck)               ;; Alternative: consult-flycheck
-	 ("M-g g" . consult-goto-line)             ;; orig. goto-line
-	 ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-	 ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-	 ("M-g m" . consult-mark)
-	 ("M-g k" . consult-global-mark)
-	 ("M-g i" . consult-imenu)
-	 ("M-g I" . consult-imenu-multi)
-	 ;; M-s bindings (search-map)
-	 ("M-s d" . consult-find)
-	 ("M-s D" . consult-locate)
-	 ("M-s g" . consult-grep)
-	 ("M-s G" . consult-git-grep)
-	 ("M-s r" . consult-ripgrep)
-	 ("M-s l" . consult-line)
-	 ("M-s L" . consult-line-multi)
-	 ("M-s m" . consult-multi-occur)
-	 ("M-s k" . consult-keep-lines)
-	 ("M-s u" . consult-focus-lines)
-	 ;; Isearch integration
-	 ("M-s e" . consult-isearch-history)
-	 :map isearch-mode-map
-	 ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-	 ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-	 ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-	 ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
-	 ;; Minibuffer history
-	 :map minibuffer-local-map
-	 ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-	 ("M-r" . consult-history))               ;; orig. previous-matching-history-element
-
-;; From here up is known and good.
-
-  ;; Enable automatic preview at point in the *Completions* buffer. This is
-  ;; relevant when you use the default completion UI.
- :hook (completion-list-mode . consult-preview-at-point-mode)
-
-
-  ;; The :init configuration is always executed (Not lazy)
-  :init
-;;(global-unset-key (kbd "C-x b"))  
-
-  ;; Optionally configure the register formatting. This improves the register
-  ;; preview for `consult-register', `consult-register-load',
-  ;; `consult-register-store' and the Emacs built-ins.
-  (setq register-preview-delay 0.5
+  
+  :bind (
+("C-c h" . consult-history)
+("C-c m" . consult-mode-command)
+("C-c k" . consult-kmacro)
+("C-x M-:" . consult-complex-command)
+("C-x b" . consult-buffer)
+("C-x 4 b" . consult-buffer-other-window)
+("C-x 5 b" . consult-buffer-other-frame)
+("C-x r b" . consult-bookmark)
+("C-x p b" . consult-project-buffer)
+("M-#" . consult-register-load)
+("M-'" . consult-register-store)
+("C-M-#" . consult-register)
+("M-y" . consult-yank-pop)
+("<help> a" . consult-apropos)
+("M-g e" . consult-compile-error)
+("M-g f" . consult-flycheck)
+("M-g g" . consult-goto-line)
+("M-g M-g" . consult-goto-line)
+("M-g o" . consult-outline)
+("M-g m" . consult-mark)
+("M-g k" . consult-global-mark)
+("M-g i" . consult-imenu)
+("M-g I" . consult-imenu-multi)
+("M-s d" . consult-find)
+("M-s D" . consult-locate)
+("M-s g" . consult-grep)
+("M-s G" . consult-git-grep)
+("M-s r" . consult-ripgrep)
+("M-s l" . consult-line)
+("M-s L" . consult-line-multi)
+("M-s m" . consult-multi-occur)
+("M-s k" . consult-keep-lines)
+("M-s u" . consult-focus-lines)
+("M-s e" . consult-isearch-history)
+("M-e" . consult-isearch-history)
+("M-s e" . consult-isearch-history)
+("M-s l" . consult-line)
+("M-s L" . consult-line-multi)
+("M-s" . consult-history)
+("M-r" . consult-history))
+:hook (completion-list-mode . consult-preview-at-point-mode)
+:init
+(setq register-preview-delay 0.5
 	register-preview-function #'consult-register-format)
-
-  ;; Optionally tweak the register preview window.
-  ;; This adds thin lines, sorting and hides the mode line of the window.
-  (advice-add #'register-preview :override #'consult-register-window)
-
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
+(advice-add #'register-preview :override #'consult-register-window)
+(setq xref-show-xrefs-function #'consult-xref
 	xref-show-definitions-function #'consult-xref)
-  ;; Configure other variables and modes in the :config section,
-  ;; after lazily loading the package.
-;; Here up is good
-  :config
-
-  ;; Optionally configure preview. The default value
-  ;; is 'any, such that any key triggers the preview.
-  ;; (setq consult-preview-key 'any)
-  ;; (setq consult-preview-key (kbd "M-."))
-  ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
-  ;; For some commands and buffer sources it is useful to configure the
-  ;; :preview-key on a per-command basis using the `consult-customize' macro.
-  ;; (consult-customize
-  ;;  consult-theme
-  ;;  :preview-key '(:debounce 0.2 any)
-  ;;  consult-ripgrep consult-git-grep consult-grep
-  ;;  consult-bookmark consult-recent-file consult-xref
-  ;;  consult--source-bookmark consult--source-recent-file
-  ;;  consult--source-project-recent-file
-  ;;  :preview-key (kbd "M-.")))
-
-
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
-
-  ;; Optionally make narrowing help available in the minibuffer.
-  ;; You may want to use `embark-prefix-help-command' or which-key instead.
-  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-
-  ;; By default `consult-project-function' uses `project-root' from project.el.
-  ;; Optionally configure a different project root function.
-  ;; There are multiple reasonable alternatives to chose from.
-    ;;;; 1. project.el (the default)
-  ;; (setq consult-project-function #'consult--default-project--function)
-    ;;;; 2. projectile.el (projectile-project-root)
-  (autoload 'projectile-project-root "projectile")
-  (setq consult-project-function (lambda (_) (projectile-project-root)))
-    ;;;; 3. vc.el (vc-root-dir)
-  ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
-    ;;;; 4. locate-dominating-file
-  ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
-  )
-
-
-;; Use `consult-completion-in-region' if Vertico is enabled.
-
-;; Otherwise use the default `completion--in-region' function.
+:config
+ (setq consult-narrow-key "<") ;; (kbd "C-+")
+(autoload 'projectile-project-root "projectile")
+(setq consult-project-function (lambda (_) (projectile-project-root)))
+)
 (setq completion-in-region-function
       (lambda (&rest args)
 	(apply (if vertico-mode
@@ -218,16 +136,47 @@
     :config
     (setq rustic-format-on-save t))
 #+end_src
-** Type/Javascript
+
+** C#
 
 #+BEGIN_SRC emacs-lisp
+(straight-use-package 'csharp-mode)
+#+END_SRC
+
+** Typescript
+
+#+begin_src emacs-lisp
 (straight-use-package 'rjsx-mode)
 (straight-use-package 'typescript-mode)
 
 (setq js-indent-level 2)
 (setq typescript-indent-level 2)
 
-#+END_SRC
+
+(use-package tide :straight t)
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    ;; company is an optional dependency. You have to
+    ;; install it separately via package-install
+    ;; `M-x package-install [ret] company`
+    (company-mode +1))
+
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
+
+  ;; formats the buffer before saving
+  (add-hook 'before-save-hook 'tide-format-before-save)
+
+  (add-hook 'typescript-mode-hook #'setup-tide-mode)
+#+end_src
+
+
+
 ** Go
 #+BEGIN_SRC emacs-lisp
 (straight-use-package 'go-mode)
@@ -290,17 +239,26 @@ Setting this to a non-nil value makes it work like literally every other program
   (prefer-coding-system 'utf-8)
 #+END_SRC
 
-** Don't be bothering me with bullshit
+** It's important to set boundarys. 
 
 #+begin_src emacs-lisp
 (setq warning-minimum-level :warning)
 #+end_src
+
+** Winner Mode
+This is a built in mode that allows you to undo/redo window
+configurations. Useful for when help/compile windows pop up and you
+don't want to deal with them. To use you enable the mode and bind winner-undo and winner-redo to something fun.
+#+BEGIN_SRC emacs-lisp
+(winner-mode)
+#+END_SRC
 
 ** Let's start with a clean slate
 
 #+begin_src emacs-lisp
 (menu-bar-mode -1)  
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
 (setq inhibit-startup-screen t)
 (setq global-visual-line-mode t)
 (setq blink-cursor-mode nil)
@@ -318,7 +276,7 @@ Setting this to a non-nil value makes it work like literally every other program
    
 * Enlightenments
 ** Olivetti Mode
-
+This mode makes looking at non-code buffers a lot nicer.
 #+begin_src emacs-lisp
 (use-package olivetti
   :straight t
@@ -330,6 +288,20 @@ Setting this to a non-nil value makes it work like literally every other program
 (straight-use-package 'vterm)
 
 #+END_SRC
+
+** Hydra
+
+#+BEGIN_SRC emacs-lisp
+(use-package hydra
+:straight t
+:ensure t)
+#+END_SRC
+** Doom-modeline
+
+#+BEGIN_SRC emacs-lisp
+(doom-modeline-mode)
+#+END_SRC
+
 ** Tab Out
 #+BEGIN_SRC emacs-lisp
 (straight-use-package 'tab-jump-out)
@@ -371,7 +343,52 @@ Setting this to a non-nil value makes it work like literally every other program
 
 
 #+end_src
- 
+
+** Evil Mode
+
+#+BEGIN_SRC emacs-lisp
+
+
+  (use-package evil
+    :straight t
+    :config
+  (setq evil-move-beyond-eol t)
+)
+  (use-package evil-leader
+  :straight t
+  :config
+  (evil-leader/set-leader "<SPC>")
+  (global-evil-leader-mode)
+  (evil-mode 1)
+
+  )
+(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+(define-key evil-insert-state-map (kbd "C-n") 'evil-next-line)
+(define-key evil-insert-state-map (kbd "C-p") 'evil-previous-line)
+(define-key evil-insert-state-map (kbd "C-f") 'evil-forward-char)
+(define-key evil-insert-state-map (kbd "C-b") 'evil-backward-char)
+(define-key evil-insert-state-map (kbd "M-f") 'evil-forward-WORD-begin)
+(define-key evil-insert-state-map (kbd "M-b") 'evil-backward-WORD-begin)
+(evil-leader/set-key
+  "g" 'consult-line
+  "b" 'consult-buffer
+  "a" 'aqr-avy-map
+  "o" 'ace-window
+  "f" 'find-file
+  "t" 'hydra-tab-bar/body
+  "e" 'eval-last-sexp 
+  "k" 'aqr-kill-map
+  "p" 'projectile-mode-map
+  "s" 'save-buffer
+  "S" 'save-some-buffers
+  "i" 'consult-imenu
+  "]" 'winner-redo
+  "[" 'winner-undo
+  "x" 'aqr-x-prefix
+)
+
+#+END_SRC
+
 ** DONE Org Mode
 
 
@@ -420,7 +437,7 @@ Setting this to a non-nil value makes it work like literally every other program
 ;; If org-capture-templates hasn't been defined yet, initialize it as an empty list.
  (boundp 'org-capture-templates)
   (setq org-capture-templates '())
-
+ 
 (add-to-list 'org-capture-templates
              '("p" "Programming Notes"))
 
@@ -448,7 +465,10 @@ Setting this to a non-nil value makes it work like literally every other program
 	       (file+headline "~/Sync/org/quotes.org" "Quotes")
                "* %?\nEntered on %U\n"))
 
-	       
+(add-to-list 'org-capture-templates
+	   	'("g" "Project Todo" entry
+         (file+headline "%(concat (projectile-project-root) \"readme.org\")" "Todo")
+         "* %?\nEntered on %U\n %i\n %a"))       
 #+END_SRC
 
 
@@ -477,7 +497,8 @@ Setting this to a non-nil value makes it work like literally every other program
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-snazzy t)
+  ;;(load-theme 'doom-snazzy t)
+  (load-theme 'doom-ephemeral t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -595,17 +616,6 @@ Setting this to a non-nil value makes it work like literally every other program
                 (setq python-shell-interpreter "python3")))))
 
 #+END_SRC
-
-*** Python Black - formatter
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package blacken
-  ;;   :init
-  ;;   (setq-default blacken-fast-unsafe t)
-  ;;   (setq-default blacken-line-length 80)
-  ;;   )
-
-#+END_SRC
-
 *** Web-Mode
 
 #+BEGIN_SRC emacs-lisp
@@ -638,41 +648,6 @@ Setting this to a non-nil value makes it work like literally every other program
   :ensure t)
 
 #+END_SRC
-
-** C#
-
-#+BEGIN_SRC emacs-lisp
-(straight-use-package 'csharp-mode)
-#+END_SRC
-
-** Typescript
-
-#+begin_src emacs-lisp
-  (use-package tide :straight t)
-  (use-package company :straight t)
-  (use-package flycheck :straight t)
-(flycheck-add-mode 'typescript-tslint 'web-mode)
-  (defun setup-tide-mode ()
-    (interactive)
-    (tide-setup)
-    (flycheck-mode +1)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (tide-hl-identifier-mode +1)
-    ;; company is an optional dependency. You have to
-    ;; install it separately via package-install
-    ;; `M-x package-install [ret] company`
-    (company-mode +1))
-
-  ;; aligns annotation to the right hand side
-  (setq company-tooltip-align-annotations t)
-
-  ;; formats the buffer before saving
-  (add-hook 'before-save-hook 'tide-format-before-save)
-
-  (add-hook 'typescript-mode-hook #'setup-tide-mode)
-#+end_src
-
 ** Projectile
 #+begin_src emacs-lisp
   (use-package projectile
@@ -689,15 +664,6 @@ Setting this to a non-nil value makes it work like literally every other program
 				  :test "go test"
 				  :run "go run"
 				  :test-suffix "_test")
-#+end_src
-** ace-window
-#+begin_src emacs-lisp
-  (use-package ace-window
-  :straight t
-  :init
-     (global-set-key (kbd "M-o") 'ace-window)
-     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  )
 #+end_src
 
 ** Dashboard (startup screen)
@@ -724,17 +690,6 @@ Setting this to a non-nil value makes it work like literally every other program
 (setq recentf-max-saved-items 25)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
   #+end_src
-
-** Which Key
-Pops up information for the available key completions.
-
-#+begin_src emacs-lisp
-  (use-package which-key
-   :straight t
-   :config
-   (which-key-mode))
-#+end_src
-
 ** Free Key
 Invoke to see which keys are free in current buffer.
 
@@ -745,10 +700,13 @@ Invoke to see which keys are free in current buffer.
 ** Complete Anything
 
 #+begin_src emacs-lisp
-  (use-package company
-  :straight t
-  :config
-  (company-mode))
+(use-package company
+:straight t
+:config
+(company-mode))
+(setq company-minimum-prefix-length 2 )
+(setq company-idle-delay 0 )
+(setq company-show-quick-access 'left)
 #+end_src
 ** Custom Functions
 
@@ -775,6 +733,40 @@ Invoke to see which keys are free in current buffer.
     (define-key aqr-kill-map (kbd "m") 'avy-kill-region)
     (global-set-key (kbd "C-k") 'aqr-kill-map))
 
+(defhydra hydra-tab-bar (:color blue :hint nil)
+  "
+^Tabs^
+----------------------------------
+[_n_] Next Tab       [_c_] Close Tab
+[_p_] Previous Tab   [_N_] New Tab
+[_l_] List Tabs      [_r_] Rename Tab
+[_g_] Goto Tab       [_s_] Switch to Tab by Name
+"
+  ("n" tab-bar-switch-to-next-tab)
+  ("p" tab-bar-switch-to-prev-tab)
+  ("l" tab-bar-select-tab-by-name)
+  ("g" tab-bar-select-tab)
+  ("c" tab-bar-close-tab)
+  ("N" tab-bar-new-tab)
+  ("r" tab-bar-rename-tab)
+  ("s" switch-to-buffer)  ; This is just an example of switching to a tab (buffer) by name.
+  ("q" nil "quit" :color blue))
+
+(global-set-key (kbd "C-c t") 'hydra-tab-bar/body)
+
+(define-prefix-command 'aqr-avy-map)
+(define-key aqr-avy-map (kbd "c r") 'avy-copy-region)
+(define-key aqr-avy-map (kbd "c l") 'avy-copy-line)
+(define-key aqr-avy-map (kbd "m r") 'avy-move-region)
+(define-key aqr-avy-map (kbd "m l") 'avy-move-line)
+(define-key aqr-avy-map (kbd "k l") 'avy-kill-line)
+(define-key aqr-avy-map (kbd "k r") 'avy-kill-region)
+(define-key aqr-avy-map (kbd "g l") 'avy-goto-line)
+(define-key aqr-avy-map (kbd "g c") 'avy-goto-char-timer)
+(define-key aqr-avy-map (kbd "g e") 'avy-goto-end-of-line)
+(define-key aqr-avy-map (kbd "g e") 'avy-goto-end-of-line)
+(define-key aqr-avy-map (kbd "g z") 'avy-goto-char-in-line)
+
 
 
   (define-prefix-command 'aqr-map)
@@ -792,15 +784,16 @@ Invoke to see which keys are free in current buffer.
 ;;(define-key aqr-map (kbd "k") 'kill-whole-line)
 ;; Use C-o for open new line below and C-O for above
 (global-set-key (kbd "C-o") (kbd "C-e RET"))
-  (global-set-key (kbd "C-S-o") (kbd "C-a RET C-p"))
-
-  (global-set-key (kbd "M-[") `backward-paragraph)
-  (global-set-key (kbd "M-]") `forward-paragraph)
-  (use-package expand-region
-    :straight t
-    :bind
-    ("C-=" . er/expand-region)
-    ("C--" . er/contract-region))
+(global-set-key (kbd "C-S-o") (kbd "C-a RET C-p"))
+(global-set-key (kbd "<f7>") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "<f8>") 'tab-bar-switch-to-next-tab)
+(global-set-key (kbd "M-[") `backward-paragraph)
+(global-set-key (kbd "M-]") `forward-paragraph)
+(use-package expand-region
+  :straight t
+  :bind
+  ("C-=" . er/expand-region)
+  ("C--" . er/contract-region))
   (global-set-key (kbd "C-+") (lambda () (interactive) (message "Use C-= you idiot")))
 
 #+end_src
@@ -838,18 +831,27 @@ Two letter combinations left
 
 bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt jv jw jx jy jz kq kx kz mx mz pq pv px qb qc qd qf qg qh qj qk ql qm qn qp qv qx qy qz sx tq vb vf vh vj vk vm vp vq vw vx wq wv wx xd xj xk xr xz yq yy zf zr zx
 
-** Writing Mode
-#+BEGIN_SRC emacs-lisp
+** Templ Mode
 
-#+END_SRC
-** Formatting
 #+BEGIN_SRC emacs-lisp
-;; (straight-use-package 'apheleia)
-;; (apheleia-global-mode +1)
+(define-derived-mode templ-mode prog-mode "templ-mode"
+  "Major mode for editing Templ files.")
+#+END_SRC
+
+We also are going to use eglot for this to check it out.
+
+#+BEGIN_SRC emacs-lisp
+(use-package eglot
+:straight t
+:config
+(add-to-list 'eglot-server-programs '((templ-mode) "templ" "lsp" "-http=localhost:7474", "-log=~/coding/go/templ.log"))
+(add-hook 'templ-mode-hook 'eglot-ensure)
+)
+
 #+END_SRC
 ** Centered Mini Buffer
-
-#+BEGIN_SRC emacs-lisp
+Disabled for now. 
+!#+BEGIN_SRC emacs-lisp
 (use-package mini-frame
   :straight t
   :config
@@ -869,6 +871,13 @@ bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt
 * Custom Behaviors
 #+BEGIN_SRC emacs-lisp
 
+(defun aqr-x-prefix ()
+  (interactive)
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map ctl-x-map)
+    (set-transient-map map)))
+
+
 (defun newline-above-and-below ()
   "Inserts a newline above and below the current line."
   (interactive)
@@ -880,15 +889,15 @@ bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt
 
 (global-set-key (kbd "C-c n") 'newline-above-and-below)
 
-
-(defun duplicate-line ()
-  "Duplicate the current line."
-  (interactive)
-  (let ((content (thing-at-point 'line)))
-    (end-of-line)
-    (newline)
-    (insert content)
-    (forward-line -1)))
+;; Turning this off because misc has a similar function
+;; (defun duplicate-line ()
+;;   "Duplicate the current line."
+;;   (interactive)
+;;   (let ((content (thing-at-point 'line)))
+;;     (end-of-line)
+;;     (newline)
+;;     (insert content)
+;;     (forward-line -1)))
 
 (global-set-key (kbd "C-c j") 'duplicate-line)
 
