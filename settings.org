@@ -1,4 +1,4 @@
-#+TITLE Emacs Init v3.1
+o#+TITLE Emacs Init v3.1
 * Straight Use Package
 
 #+begin_src emacs-lisp
@@ -30,6 +30,11 @@ Makes sure that emacs has the same path as your shell.
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 #+END_SRC
+* Desktop Save
+#+BEGIN_SRC emacs-lisp
+(desktop-save-mode 0)
+#+END_SRC
+
 * Completion
 ** Vertico Orderless Marginalia
 Vertico for vertical completion.
@@ -140,7 +145,8 @@ Consult make all this stuff below better.
 ** C#
 
 #+BEGIN_SRC emacs-lisp
-(straight-use-package 'csharp-mode)
+;; I guess csharp mode is built in now?
+;;(straight-use-package 'csharp-mode)
 #+END_SRC
 
 ** Typescript
@@ -223,7 +229,9 @@ Setting this to a non-nil value makes it work like literally every other program
       auto-save-default t               ; auto-save every buffer that visits a file
       auto-save-timeout 20              ; number of seconds idle time before auto-save (default: 30)
       auto-save-interval 200            ; number of keystrokes between auto-saves (default: 300)
+      auto-save-visited-file-name t
       )
+
 #+END_SRC
 
 ** Force UTF-8 Everywhere
@@ -346,7 +354,8 @@ This mode makes looking at non-code buffers a lot nicer.
 
 ** Evil Mode
 
-#+BEGIN_SRC emacs-lisp
+Disabled
+!#+BEGIN_SRC emacs-lisp
 
 
   (use-package evil
@@ -358,11 +367,11 @@ This mode makes looking at non-code buffers a lot nicer.
   :straight t
   :config
   (evil-leader/set-leader "<SPC>")
-  (global-evil-leader-mode)
-  (evil-mode 1)
+  ;;(global-evil-leader-mode)
+  ;;(evil-mode 1)
 
   )
-(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+q(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 (define-key evil-insert-state-map (kbd "C-n") 'evil-next-line)
 (define-key evil-insert-state-map (kbd "C-p") 'evil-previous-line)
 (define-key evil-insert-state-map (kbd "C-f") 'evil-forward-char)
@@ -408,7 +417,8 @@ This mode makes looking at non-code buffers a lot nicer.
 	)
 ;;(add-hook 'org-mode-hook 'my-minor-modes)
 
-
+(use-package org-wc
+  :straight t)
   
 (setq org-agenda-files '("~/Sync/org/agenda")) 
 (setq org-directory "~/Sync/org/")
@@ -622,7 +632,8 @@ This mode makes looking at non-code buffers a lot nicer.
 (use-package web-mode
   :straight t)
    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-   (add-to-list 'auto-mode-alist '("\\.tmpl?\\'" . web-mode))
+   (add-to-list 'auto-mode-alist '("\\.razor?\\'" . web-mode))
+;;   (add-to-list 'auto-mode-alist '("\\.tmpl?\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.cshtml?\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.svelte?\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.j2?\\'" . web-mode))
@@ -632,7 +643,7 @@ This mode makes looking at non-code buffers a lot nicer.
 	 ("blade"  . "\\.blade\\.")
 	 ("svelte" . "\\.svelte\\.")
 	 ("django" . "\\.j2\\.")
-	 ("go"     . "\\.tmpl\\.")
+;;	 ("go"     . "\\.tmpl\\.")
  ))
  (add-hook 'web-mode-hook
             (lambda ()
@@ -831,11 +842,28 @@ Two letter combinations left
 
 bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt jv jw jx jy jz kq kx kz mx mz pq pv px qb qc qd qf qg qh qj qk ql qm qn qp qv qx qy qz sx tq vb vf vh vj vk vm vp vq vw vx wq wv wx xd xj xk xr xz yq yy zf zr zx
 
+** Ansi Color for Compilation Mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package ansi-color
+    :hook (compilation-filter . ansi-color-compilation-filter)) 
+#+END_SRC
+
+#+RESULTS:
+| colorize-compilation-buffer |
+
+
 ** Templ Mode
 
 #+BEGIN_SRC emacs-lisp
-(define-derived-mode templ-mode prog-mode "templ-mode"
-  "Major mode for editing Templ files.")
+(define-derived-mode templ-mode go-mode "templ-mode"
+  "Major mode for editing Templ files."
+(add-to-alist 'auto-mode-alist  '("\\.templ\\'" . templ-mode))
+(defun templ-generate ()
+  "Run templ generate on the current file."
+  (shell-command "templ generate"))
+(add-hook 'after-save-hook 'templ-generate nil t))
+
 #+END_SRC
 
 We also are going to use eglot for this to check it out.
@@ -844,7 +872,7 @@ We also are going to use eglot for this to check it out.
 (use-package eglot
 :straight t
 :config
-(add-to-list 'eglot-server-programs '((templ-mode) "templ" "lsp" "-http=localhost:7474", "-log=~/coding/go/templ.log"))
+(add-to-list 'eglot-server-programs '((templ-mode) "templ" "lsp"))
 (add-hook 'templ-mode-hook 'eglot-ensure)
 )
 
@@ -867,6 +895,18 @@ Disabled for now.
         (minibuffer . only)))
 
 #+END_SRC
+
+* Tree Sitter
+#+BEGIN_SRC emacs-lisp
+(straight-use-package 'tree-sitter)
+(straight-use-package 'tree-sitter-langs)
+(use-package templ-ts-mode
+      :straight t
+      )
+
+
+#+END_SRC
+
 
 * Custom Behaviors
 #+BEGIN_SRC emacs-lisp
