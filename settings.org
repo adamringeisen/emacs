@@ -1,4 +1,4 @@
-o#+TITLE Emacs Init v3.1
+#+TITLE Emacs Init v3.1
 * Straight Use Package
 
 #+begin_src emacs-lisp
@@ -186,6 +186,7 @@ Consult make all this stuff below better.
 ** Go
 #+BEGIN_SRC emacs-lisp
 (straight-use-package 'go-mode)
+   (add-to-list 'auto-mode-alist '("\\.go?\\'" . go-mode))
 #+END_SRC
 
 ** Dockerfiles
@@ -632,6 +633,7 @@ q(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 (use-package web-mode
   :straight t)
    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.razor?\\'" . web-mode))
 ;;   (add-to-list 'auto-mode-alist '("\\.tmpl?\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.cshtml?\\'" . web-mode))
@@ -852,7 +854,11 @@ bq bz cf cj cv cx fq fv fx fz gq gv gx hx hz jb jd jf jg jh jl jm jp jq jr js jt
 #+RESULTS:
 | colorize-compilation-buffer |
 
+** Dired
 
+#+BEGIN_SRC emacs-lisp
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+#+END_SRC
 ** Templ Mode
 
 #+BEGIN_SRC emacs-lisp
@@ -897,7 +903,8 @@ Disabled for now.
 #+END_SRC
 
 * Tree Sitter
-#+BEGIN_SRC emacs-lisp
+Disabled. Either I'm too dumb to use it or it doesn't actually do anything.
+!#+BEGIN_SRC emacs-lisp
 (straight-use-package 'tree-sitter)
 (straight-use-package 'tree-sitter-langs)
 (use-package templ-ts-mode
@@ -905,7 +912,7 @@ Disabled for now.
       )
 
 
-#+END_SRC
+!#+END_SRC
 
 
 * Custom Behaviors
