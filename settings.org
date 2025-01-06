@@ -291,13 +291,13 @@ This mode makes looking at non-code buffers a lot nicer.
   :straight t
   )
 #+end_src
-** Denote
+** TODO Denote
 #+begin_src emacs-lisp
 (use-package denote
   :straight t
   :ensure t
   :config
-  (setq denote-directory (expand-file-name "~/Snyc/notes/"))
+  (setq denote-directory (expand-file-name "~/Sync/notes/"))
   )
 
 #+end_src
