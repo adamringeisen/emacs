@@ -291,6 +291,16 @@ This mode makes looking at non-code buffers a lot nicer.
   :straight t
   )
 #+end_src
+** Denote
+#+begin_src emacs-lisp
+(use-package denote
+  :straight t
+  :ensure t
+  :config
+  (setq denote-directory (expand-file-name "~/Snyc/notes/"))
+  )
+
+#+end_src
 ** VTERM
 
 #+BEGIN_SRC emacs-lisp
@@ -468,6 +478,11 @@ q(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
                "* %^{Description}\n%?\n#+BEGIN_SRC sql\n%i\n#+END_SRC\nEntered on %U\n"))
 
 (add-to-list 'org-capture-templates
+             '("pb" "Bash Note" entry
+               (file+headline "~/Sync/org/code-notes.org" "Bash")
+               "* %^{Description}\n%?\n#+BEGIN_SRC bash\n%i\n#+END_SRC\nEntered on %U\n"))
+
+(add-to-list 'org-capture-templates
       '("t" "Thought" entry (file+headline org-default-notes-file "Random Thoughts")
          "* %?\nEntered on %U\n"))
 
@@ -479,7 +494,22 @@ q(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 (add-to-list 'org-capture-templates
 	   	'("g" "Project Todo" entry
          (file+headline "%(concat (projectile-project-root) \"readme.org\")" "Todo")
-         "* %?\nEntered on %U\n %i\n %a"))       
+         "* %?\nEntered on %U\n %i\n %a"))
+
+(add-to-list 'org-capture-templates
+             '("w" "Writing"))
+
+(add-to-list 'org-capture-templates
+	     '("wc" "Character" entry
+	       (file+headline (lambda () (org-capture-get :original-file)) "Characters")
+         "* %^{Name}\n"))
+
+(add-to-list 'org-capture-templates
+	     '("wp" "Place" entry
+	       (file+headline (lambda () (org-capture-get :original-file)) "Places")
+         "* %^{Location Name}\n"))
+
+
 #+END_SRC
 
 
@@ -582,7 +612,7 @@ q(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
       (lsp-ui-imenu--custom-mode-line-format nil)
       :hook (lsp-mode . lsp-ui-mode))
 
-(require 'lsp-quicklintjs)
+;; (require 'lsp-quicklintjs)
 #+end_src
 
 *** Python
@@ -914,7 +944,6 @@ Disabled. Either I'm too dumb to use it or it doesn't actually do anything.
 
 !#+END_SRC
 
-
 * Custom Behaviors
 #+BEGIN_SRC emacs-lisp
 
@@ -948,6 +977,18 @@ Disabled. Either I'm too dumb to use it or it doesn't actually do anything.
 
 (global-set-key (kbd "C-c j") 'duplicate-line)
 
+
+#+END_SRC
+
+* Latex
+#+BEGIN_SRC emacs-lisp
+(use-package auctex
+  :straight t
+  :ensure t)
+
+(use-package company-auctex
+  :straight t
+  :ensure t)
 
 #+END_SRC
 
